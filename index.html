@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área Técnica - Portfólio Pedro Matos</title>
+
+    <!-- Importação de Fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- Variáveis de Cor e Tema - Área Técnica --- */
+        :root {
+            --bg-dark: #121418; --bg-card: rgba(30, 35, 45, 0.9); --text-light: #f0f4f8; --text-medium: #a0aec0;
+            --accent-color: #00c6ff; --accent-light: rgba(0, 198, 255, 0.1); --border-color: rgba(240, 244, 248, 0.15);
+            --font-serif: 'Lora', serif; --font-sans: 'Inter', sans-serif;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-sans); background-color: var(--bg-dark); color: var(--text-light); line-height: 1.65;
+            overflow-x: hidden; cursor: none; background: linear-gradient(to bottom, var(--bg-dark), #0a0c0f 150vh);
+        }
+        h1, h2, h3, h4, h5, h6 { font-family: var(--font-serif); color: var(--text-light); line-height: 1.3; margin-bottom: 0.8em; font-weight: 500; }
+        h1 { font-size: 3.2rem; font-weight: 600; } h2 { font-size: 2.5rem; font-weight: 600; } h3 { font-size: 1.3rem; font-weight: 500; }
+        a { color: var(--text-medium); text-decoration: none; transition: color 0.3s ease; }
+        a:hover { color: var(--accent-color); }
+        img, video { max-width: 100%; display: block; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .section { padding: 80px 0; position: relative; opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
+        .section.visible { opacity: 1; transform: translateY(0); }
+        .section-tag { display: inline-block; background-color: var(--accent-light); color: var(--text-light); padding: 6px 18px; border-radius: 20px; font-size: 0.85rem; margin-bottom: 10px; font-weight: 400; border: 1px solid rgba(0, 198, 255, 0.3); font-family: var(--font-sans); }
+        .btn { display: inline-block; padding: 12px 28px; border-radius: 25px; font-weight: 500; transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; border: none; cursor: none; text-align: center; font-family: var(--font-sans); font-size: 0.95rem; }
+        .btn-primary { background-color: var(--accent-color); color: var(--bg-dark); font-weight: 600; box-shadow: 0 4px 15px rgba(0, 198, 255, 0.25); }
+        .btn-primary:hover { background-color: #33d7ff; color: #000; transform: scale(1.03); box-shadow: 0 6px 20px rgba(0, 198, 255, 0.35); }
+        .btn-secondary { background-color: transparent; color: var(--text-medium); border: 1px solid var(--border-color); }
+        .btn-secondary:hover { background-color: var(--accent-light); color: var(--text-light); border-color: rgba(0, 198, 255, 0.4); transform: scale(1.03); }
+        .grid { display: grid; gap: 30px; }
+        .grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+        .card {
+            background-color: var(--bg-card); padding: 0; border-radius: 8px; border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); opacity: 0; transform: translateY(25px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.4s ease, border-color 0.4s ease;
+            overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+        }
+        .card.visible { opacity: 1; transform: translateY(0); }
+        .grid .card:nth-child(1).visible { transition-delay: 0.1s; } .grid .card:nth-child(2).visible { transition-delay: 0.2s; } .grid .card:nth-child(3).visible { transition-delay: 0.3s; }
+        .text-center { text-align: center; } .mt-2 { margin-top: 20px; } .mb-4 { margin-bottom: 40px; }
+        .main-header { position: sticky; top: 20px; left: 0; width: calc(100% - 40px); margin: 20px auto 0; z-index: 1000; display: flex; justify-content: center; }
+        .header-content { display: flex; justify-content: space-between; align-items: center; background-color: rgba(18, 20, 24, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 30px; padding: 8px 25px; width: 100%; max-width: 800px; border: 1px solid var(--border-color); }
+        .logo { font-size: 1.5rem; font-weight: 600; color: var(--text-light); display: flex; align-items: center; font-family: var(--font-serif);}
+        .logo span { display: inline-block; width: 20px; height: 20px; background-color: var(--accent-color); border-radius: 50%; margin-right: 10px; }
+        .main-nav ul { list-style: none; display: flex; gap: 35px; }
+        .main-nav a { color: var(--text-medium); font-weight: 400; font-size: 0.95rem; transition: color 0.3s ease; cursor: none; }
+        .main-nav a:hover, .main-nav a.active { color: var(--text-light); }
+        .header-cta .btn { padding: 8px 20px; font-size: 0.9rem; }
+
+        /* --- ESTILOS ESPECÍFICOS PARA ÁREA TÉCNICA (COM IMAGEM NO HEADER) --- */
+        #disciplina-header {
+            padding-top: 120px; padding-bottom: 60px; /* Padding ajustado */
+            /* Fundo (mantido) */
+            background-color: var(--bg-dark);
+            background-image: linear-gradient(rgba(18, 20, 24, 0.85), rgba(18, 20, 24, 0.98)),
+                              repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(0, 198, 255, 0.03) 35px, rgba(0, 198, 255, 0.03) 70px),
+                              repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(0, 198, 255, 0.02) 35px, rgba(0, 198, 255, 0.02) 70px);
+            border-bottom: 1px solid var(--border-color); position: relative; overflow: hidden;
+            opacity: 1; transform: none;
+            display: flex; align-items: center; /* Para centralizar o container */
+        }
+        /* Container Flex para layout lado a lado */
+        .header-layout-container {
+            display: flex; align-items: center; justify-content: space-between; gap: 40px; width: 100%;
+        }
+        /* Coluna do Texto */
+        .header-text-content {
+            flex: 1; min-width: 0; position: relative; z-index: 2;
+            text-align: left; /* Alinha texto à esquerda */
+            opacity: 0; transform: translateY(20px); animation: fadeInUp 0.8s ease-out forwards;
+        }
+        /* Coluna da Imagem */
+        .header-image-content {
+            flex-basis: 45%; /* Largura base da imagem (ajuste %) */
+            max-width: 500px; /* Limite */
+            position: relative; z-index: 1;
+            opacity: 0; transform: translateX(30px); animation: fadeInRight 0.8s 0.2s ease-out forwards;
+        }
+        .header-image-content img { width: 100%; height: auto; object-fit: cover; border-radius: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
+        /* Ajustes no Título e Parágrafo */
+        #disciplina-header h1 { text-shadow: 0 2px 15px rgba(0, 198, 255, 0.15); margin-bottom: 0.5em; font-size: 4rem; }
+        #disciplina-header p { font-size: 1.1rem; color: var(--text-medium); max-width: 100%; margin: 0; }
+        /* Animações específicas */
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInRight { to { opacity: 1; transform: translateX(0); } }
+
+        /* Seção de Posts */
+        #disciplina-posts { /* Herda animação .section */ }
+        .post-card { transition: transform 0.3s ease, box-shadow 0.4s ease, opacity 0.6s ease-out 0.1s, transform 0.6s ease-out 0.1s, border-color 0.4s ease; }
+        .post-card:hover { transform: translateY(-5px); box-shadow: 0 8px 30px rgba(0, 198, 255, 0.15); border-color: rgba(0, 198, 255, 0.6); }
+        .post-media { width: 100%; height: 220px; overflow: hidden; background-color: #0e1013; }
+        .post-media img, .post-media video { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease-out, filter 0.4s ease; filter: grayscale(30%) contrast(1.05); cursor: pointer; }
+        .post-card:hover .post-media img, .post-card:hover .post-media video { transform: scale(1.03); filter: grayscale(0%) contrast(1.1); }
+        .post-content { padding: 25px 30px; flex-grow: 1; background-color: transparent; position: relative; }
+        .post-content h3, .post-content p { opacity: 0; transform: scale(0.98); transition: opacity 0.5s ease-out 0.1s, transform 0.4s ease-out 0.1s; }
+        .post-card.visible .post-content h3 { transition-delay: 0.3s; } .post-card.visible .post-content p { transition-delay: 0.4s; }
+        .post-card.visible .post-content h3, .post-card.visible .post-content p { opacity: 1; transform: scale(1); }
+        .post-content h3 { margin-bottom: 15px; color: var(--text-light); font-weight: 600; }
+        .post-content p { font-size: 0.98rem; color: var(--text-medium); margin-bottom: 0; line-height: 1.6; }
+
+        /* --- Rodapé --- */
+        .main-footer { background-color: #0a0c0f; padding: 50px 0 25px; margin-top: 100px; border-top: 1px solid var(--border-color); opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out 0.2s, transform 0.6s ease-out 0.2s; }
+        .main-footer.visible { opacity: 1; transform: translateY(0); }
+        .footer-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px; flex-wrap: wrap; gap: 20px; }
+        .footer-logo .logo { font-size: 1.5rem; }
+        .social-links a { margin-left: 18px; font-size: 1.3rem; color: var(--text-medium); transition: color 0.3s ease, transform 0.3s ease; cursor: none; }
+        .social-links a:hover { color: var(--accent-color); transform: scale(1.1); }
+        .footer-bottom { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 25px; font-size: 0.85rem; color: #888; flex-wrap: wrap; gap: 10px; }
+        .footer-links ul { list-style: none; display: flex; gap: 25px; }
+        .footer-links a { color: var(--text-medium); font-size: 0.9rem; transition: color 0.3s ease; cursor: none; }
+        .footer-links a:hover { color: var(--text-light); }
+        .footer-contact { color: var(--text-medium); font-size: 0.9rem; }
+
+        /* --- Estilos do Cursor Personalizado --- */
+        #custom-cursor-outer, #custom-cursor-inner { position: fixed; top: 0; left: 0; border-radius: 50%; pointer-events: none; z-index: 9999; opacity: 0; transform: translate(-50%, -50%); }
+        #custom-cursor-outer { width: 35px; height: 35px; border: 2px solid rgba(240, 244, 248, 0.6); transition: top 0.1s ease-out, left 0.1s ease-out, width 0.2s ease-out, height 0.2s ease-out, opacity 0.3s ease-out, border-color 0.2s ease, background-color 0.2s ease; }
+        #custom-cursor-inner { width: 7px; height: 7px; background-color: rgba(240, 244, 248, 0.8); transition: width 0.2s ease-out, height 0.2s ease-out, opacity 0.3s ease-out, background-color 0.2s ease; }
+        body.cursor-hover #custom-cursor-outer { width: 45px; height: 45px; border-color: var(--accent-color); border-width: 2px; background-color: rgba(0, 198, 255, 0.1); }
+        body.cursor-hover #custom-cursor-inner { width: 5px; height: 5px; background-color: var(--accent-color); opacity: 1; }
+
+        /* --- ESTILOS PARA ZOOM DA IMAGEM (CLIQUE) --- */
+        #image-zoom-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85); display: flex; align-items: center; justify-content: center; z-index: 1050; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; cursor: zoom-out; }
+        #image-zoom-overlay.visible { opacity: 1; pointer-events: auto; }
+        #image-zoom-container { position: relative; max-width: 90vw; max-height: 90vh; transform: scale(0.8); opacity: 0; transition: transform 0.3s ease, opacity 0.3s ease; box-shadow: 0 10px 40px rgba(0,0,0,0.5); border-radius: 5px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        #image-zoom-overlay.visible #image-zoom-container { transform: scale(1); opacity: 1; }
+        #image-zoom-container img { display: block; object-fit: contain; max-width: 100%; max-height: 100%; width: auto; height: auto; margin: auto; }
+        #image-zoom-overlay img { cursor: default; }
+
+        /* --- Media Queries --- */
+        @media (max-width: 992px) {
+             .header-layout-container { gap: 30px; }
+              #disciplina-header h1 { font-size: 3.5rem; }
+              .header-image-content { flex-basis: 40%; }
+            h2 { font-size: 2rem; }
+            #disciplina-posts .grid-cols-3 { grid-template-columns: repeat(2, 1fr); }
+            .main-header { width: calc(100% - 30px); top: 15px; } .header-content { padding: 6px 20px; } .main-nav ul { gap: 25px; }
+        }
+        @media (max-width: 768px) {
+             #disciplina-header { padding-top: 100px; padding-bottom: 50px; }
+             .header-layout-container { flex-direction: column; gap: 30px; }
+             .header-text-content { text-align: center; order: 2; animation: none; opacity: 1; transform: none;}
+              #disciplina-header h1 { font-size: 3rem; }
+             .header-image-content { flex-basis: auto; width: 70%; max-width: 350px; margin: 0 auto; order: 1; animation: none; opacity: 1; transform: none; }
+            .section { padding: 60px 0; } h1 { font-size: 2.4rem; }
+            #disciplina-posts .grid-cols-3, #disciplina-posts .grid-cols-2 { grid-template-columns: 1fr; }
+            .header-content { flex-direction: column; gap: 10px; padding: 15px; border-radius: 20px; } .main-nav ul { justify-content: center; } .header-cta { margin-top: 10px; }
+            .footer-top, .footer-bottom { flex-direction: column; text-align: center; gap: 15px; } .social-links { margin-top: 10px; } .footer-links { margin-top: 10px; order: 1; } .footer-contact { order: 2; } .copyright { order: 3; }
+            body { cursor: auto; } #custom-cursor-outer, #custom-cursor-inner { display: none; } a, button, .btn, .post-card, video, .post-media img { cursor: pointer !important; }
+             .section, .card, .post-card, .main-footer { opacity: 1; transform: none; transition: opacity 0.5s ease-out; }
+             .section.visible, .card.visible, .post-card.visible, .main-footer.visible { opacity: 1; transform: none; }
+             .post-content h3, .post-content p { animation: none; opacity: 1; transform: none; transition: none;}
+             .post-media { filter: none; }
+             #image-zoom-container { max-width: 95vw; max-height: 95vh; }
+        }
+        @media (max-width: 576px) {
+            #disciplina-header h1 { font-size: 2.5rem; }
+            .header-image-content { width: 80%; }
+             h2 { font-size: 1.7rem; } h3 { font-size: 1.15rem;}
+            .btn { padding: 10px 22px; font-size: 0.9rem;} .main-nav ul { gap: 15px; flex-wrap: wrap; justify-content: center; } .main-nav a { font-size: 0.9rem; }
+            #disciplina-header p { font-size: 1rem; } .post-content p { font-size: 0.95rem; }
+            .post-media { height: 200px; } .post-content { padding: 20px 25px; }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Cursor -->
+    <div id="custom-cursor-outer"></div>
+    <div id="custom-cursor-inner"></div>
+
+    <!-- Cabeçalho -->
+    <header class="main-header">
+        <div class="header-content">
+            <a href="index.html" class="logo"><span></span>Portfólio</a>
+            <nav class="main-nav"> <ul> <li><a href="index.html#disciplinas">Disciplinas</a></li> <li><a href="index.html#sobre">Sobre Mim</a></li> </ul> </nav>
+            <div class="header-cta"> <a href="index.html#footer" class="btn btn-primary">Contato</a> </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Cabeçalho da Disciplina Área Técnica - ATUALIZADO COM IMAGEM -->
+        <section id="disciplina-header">
+            <div class="container header-layout-container"> <!-- Container principal -->
+                <!-- Coluna do Texto -->
+                <div class="header-text-content">
+                    <span class="section-tag">◎ Formação e Projetos</span>
+                    <h1>Área Técnica</h1>
+                    <p>Desenvolvimento de habilidades e projetos na área técnica.</p>
+                </div>
+                <!-- Coluna da Imagem -->
+                <div class="header-image-content">
+                    <img src="img/coisas.webp" alt="Ilustração Área Técnica"> <!-- SUA IMAGEM AQUI -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Posts das Atividades da Área Técnica -->
+        <section id="disciplina-posts" class="section">
+            <div class="container">
+                 <div class="grid grid-cols-3">
+                    <!-- POST 1 -->
+                    <div class="card post-card">
+                        <div class="post-media"> <img src="img/canvas.png" alt="Canvas Business Model"> </div>
+                        <div class="post-content"> <h3>Canvas Business Model</h3> <p>Criação de um Canvas Business Model para uma empresa de Factoring, estruturando o modelo de negócio de forma prática.</p> </div>
+                    </div>
+                    <!-- POST 2 -->
+                     <div class="card post-card">
+                        <div class="post-media"> <img src="img/cocozin.png" alt="Protótipo Arduino"> </div>
+                        <div class="post-content"> <h3>Desafio IoT</h3> <p>Desenvolvimento de um sistema de barreira automática com Arduino, acionada por sensor de proximidade.</p> </div>
+                    </div>
+                    <!-- POST 3 -->
+                    <div class="card post-card">
+                         <div class="post-media"> <img src="img/site.png" alt="Interface de site"> </div>
+                         <div class="post-content"> <h3>Site de Gestão (Backend)</h3> <p>Aplicação dos conceitos de backend e banco de dados aprendidos para criar um site de organização de empréstimos.</p> </div>
+                    </div>
+                 </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Rodapé -->
+    <footer id="footer" class="main-footer">
+        <div class="container">
+            <div class="footer-top"> <a href="index.html" class="footer-logo logo"><span></span>Portfólio</a> <div class="social-links"></div> </div>
+            <div class="footer-bottom">
+                <div class="footer-links"> <ul> <li><a href="index.html#disciplinas">Disciplinas</a></li> <li><a href="index.html#sobre">Sobre Mim</a></li> </ul> </div>
+                <div class="footer-contact">Contato: pedro.matos.exemplo@email.com</div>
+                 <div class="copyright">© 2025 Pedro Matos - SESI SENAI</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script (Inclui Zoom ao Clicar) -->
+    <script>
+        // --- Intersection Observer ---
+        const observerOptions={root:null,rootMargin:'0px',threshold:0.15};const observerCallback=(e,o)=>{e.forEach(e=>{e.isIntersecting&&(e.target.classList.add('visible'),o.unobserve(e.target))})};const observer=new IntersectionObserver(observerCallback,observerOptions);const elementsToAnimate=document.querySelectorAll('#disciplina-posts, .post-card, .main-footer');elementsToAnimate.forEach(e=>observer.observe(e));
+        // --- Cursor Personalizado ---
+        const cursorOuter=document.getElementById('custom-cursor-outer');const cursorInner=document.getElementById('custom-cursor-inner');let isCursorVisible=!1;const isTouchDevice='ontouchstart'in window||navigator.maxTouchPoints>0;if(!isTouchDevice&&cursorOuter&&cursorInner){const e=e=>{const t=e.clientX,o=e.clientY;isCursorVisible||(cursorOuter.style.opacity='1',cursorInner.style.opacity='1',isCursorVisible=!0),cursorInner.style.top=`${o}px`,cursorInner.style.left=`${t}px`,requestAnimationFrame(()=>{cursorOuter.style.top=`${o}px`,cursorOuter.style.left=`${t}px`})},t=e=>{document.body.classList.add('cursor-hover')},o=e=>{document.body.classList.remove('cursor-hover')};window.addEventListener('mousemove',e);const s=document.querySelectorAll('a, button, .btn, .post-card video, .logo, .social-links a');s.forEach(e=>{e.addEventListener('mouseenter',t),e.addEventListener('mouseleave',o)})}else{document.body.style.cursor='auto';const e=document.querySelectorAll('a, button, .btn, .post-card video, .logo, .social-links a');e.forEach(e=>{e.style.cursor='pointer'})};
+
+        // --- CÓDIGO PARA ZOOM DA IMAGEM AO CLICAR ---
+        const postImages = document.querySelectorAll('.post-media img');
+        let zoomOverlay = null; let zoomContainer = null; let zoomedImage = null;
+
+        function showZoomedImage(imgElement) {
+            if (document.getElementById('image-zoom-overlay')) return;
+            const imgSrc = imgElement.src;
+            zoomOverlay = document.createElement('div'); zoomOverlay.id = 'image-zoom-overlay'; zoomOverlay.onclick = hideZoomedImage;
+            zoomContainer = document.createElement('div'); zoomContainer.id = 'image-zoom-container';
+            zoomedImage = document.createElement('img'); zoomedImage.src = imgSrc; zoomedImage.alt = "Imagem Ampliada"; zoomedImage.onclick = (e) => e.stopPropagation();
+            zoomContainer.appendChild(zoomedImage); zoomOverlay.appendChild(zoomContainer);
+            document.body.appendChild(zoomOverlay); document.body.style.overflow = 'hidden';
+            window.getComputedStyle(zoomOverlay).opacity; window.getComputedStyle(zoomContainer).opacity;
+            setTimeout(() => { if (zoomOverlay) zoomOverlay.classList.add('visible'); }, 10);
+            if (!isTouchDevice) { if (cursorOuter) cursorOuter.style.opacity = '0'; if (cursorInner) cursorInner.style.opacity = '0'; }
+             document.body.style.cursor = 'zoom-out';
+        }
+
+        function hideZoomedImage() {
+            if (zoomOverlay) {
+                zoomOverlay.classList.remove('visible');
+                zoomOverlay.addEventListener('transitionend', () => {
+                    if (zoomOverlay && document.body.contains(zoomOverlay)) { document.body.removeChild(zoomOverlay); }
+                    zoomOverlay = null; zoomContainer = null; zoomedImage = null;
+                    document.body.style.overflow = '';
+                    if (!isTouchDevice) {
+                         if (cursorOuter) cursorOuter.style.opacity = '1'; if (cursorInner) cursorInner.style.opacity = '1';
+                         document.body.style.cursor = 'none';
+                    } else { document.body.style.cursor = 'auto'; }
+                }, { once: true });
+            }
+        }
+
+        postImages.forEach(img => {
+            if (img.parentElement && img.parentElement.classList.contains('post-media') && !img.src.includes('placeholder')) {
+                img.addEventListener('click', (event) => { showZoomedImage(event.target); });
+            } else if(img.parentElement && img.parentElement.classList.contains('post-media')) {
+                 img.style.cursor = 'default';
+            }
+        });
+
+         document.addEventListener('keydown', (event) => { // Fecha com ESC
+             if (event.key === 'Escape' && zoomOverlay && zoomOverlay.classList.contains('visible')) { hideZoomedImage(); }
+         });
+
+         // (Re)aplicar cursor correto aos outros elementos interativos
+         const interactiveElementsForZoom = document.querySelectorAll('a, button, .btn, .post-card video, .logo, .social-links a');
+         interactiveElementsForZoom.forEach(el => { if (!isTouchDevice) { el.style.cursor = 'none'; } else { el.style.cursor = 'pointer';} });
+    </script>
+
+</body>
+</html>
